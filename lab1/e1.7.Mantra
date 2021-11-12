@@ -1,0 +1,14 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class Mantra {
+    public static void main(String[] args) {
+        printLines();
+        System.out.println();
+        printLines();
+    }
+    
+    public static void printLines() {
+        System.out.println("There's one thing every coder must understand:");
+        System.out.println("The System.out.println command.");
+    }
+}

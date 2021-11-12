@@ -1,0 +1,15 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void printGPA() {
+    Scanner input = new Scanner(System.in);
+    System.out.print("Enter a student record: ");
+    String name = input.next();
+    int noScore = input.nextInt();
+    
+    int sum = 0;
+    for (int i = 0; i < noScore; i++) {
+        int score = input.nextInt();
+        sum += score;
+    }
+    System.out.print(name + "'s grade is " + (double) sum/noScore);
+}

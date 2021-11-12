@@ -1,0 +1,10 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static String padString(String str, int len) {
+    String padding = "";
+    for (int i = 1; i <= (len - str.length()); i++) {
+        padding += " ";
+    }
+        
+    return padding + str;
+}

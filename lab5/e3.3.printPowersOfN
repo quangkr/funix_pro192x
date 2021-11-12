@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void printPowersOfN(int base, int maxExp) {
+    for (int i = 0; i <= maxExp; i++) {
+        System.out.print((int) Math.pow(base, i) + " ");
+    }
+}

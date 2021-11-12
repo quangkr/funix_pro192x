@@ -1,0 +1,25 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class TheNameGame {
+    public static void printPoem(String name) {
+        String firstChar = name.substring(0, 1);
+        String rest = name.substring(1);
+        String CapitalizedName = firstChar.toUpperCase() + rest.toLowerCase();
+        
+        System.out.println(CapitalizedName + " " + CapitalizedName + ", bo-B" + rest.toLowerCase());
+        System.out.println("Banana-fana fo-F" + rest.toLowerCase());
+        System.out.println("Fee-fi-mo-M" + rest.toLowerCase());
+        System.out.println(name.toUpperCase() + "!");
+    }
+    
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("What is your name? ");
+        String firstName = input.next();
+        String lastName = input.next();
+        
+        printPoem(firstName);        
+        System.out.println();
+        printPoem(lastName);
+    }
+}

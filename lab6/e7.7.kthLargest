@@ -1,0 +1,8 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static int kthLargest(int k, int[] arr) {
+    int[] copyArr = arr.clone();
+    Arrays.sort(copyArr);
+    
+    return copyArr[copyArr.length - 1 - k];
+}

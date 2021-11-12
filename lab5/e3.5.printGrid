@@ -1,0 +1,13 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void printGrid(int row, int col) {
+    for (int i = 1; i <= row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (j > 0) {
+                System.out.print(", ");
+            }
+            System.out.print(i + j*row);
+        }
+        System.out.print("\n");
+    }
+}

@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void quadratic(int a, int b, int c) {
+    double d = Math.sqrt(b*b - 4*a*c);
+    System.out.println("First root = " + (-b + d)/(2*a));
+    System.out.println("Second root = " + (-b - d)/(2*a));
+}

@@ -1,0 +1,17 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class Stewie2 {
+    public static void main(String[] args) {
+        System.out.println("//////////////////////");
+        printLines();
+        printLines();
+        printLines();
+        printLines();
+        printLines();
+    }
+    
+    public static void printLines() {
+        System.out.println("|| Victory is mine! ||");
+        System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+    }
+}

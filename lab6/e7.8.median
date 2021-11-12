@@ -1,0 +1,47 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static int median(int[] arr) {
+    int[] clone = arr.clone();
+    Arrays.sort(clone);
+    return clone[arr.length / 2];
+}
+
+public static int median(int[] arr) {
+    if (arr.length <= 1) {
+        return arr[0];
+    }
+    
+    int min = arr[0];
+    int max = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        } else if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    
+    int range = max - min + 1;
+    int[] tallyArr = new int[range];
+    for (int i = 0; i < arr.length; i++) {
+        tallyArr[arr[i] - min]++;
+    }
+    
+    int midIndex = 0;
+    if (arr.length % 2 == 0) {
+        midIndex = arr.length / 2;
+    } else {
+        midIndex = arr.length / 2 + 1;
+    }
+    
+    int freqCount = 0;
+    int median = arr[0];
+    for (int i = 0; i < tallyArr.length; i++) {
+        freqCount += tallyArr[i];
+        if (freqCount >= midIndex) {
+            median = i + min;
+            break;
+        }
+    }
+    return median;
+}

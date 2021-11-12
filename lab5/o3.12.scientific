@@ -1,0 +1,5 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static double scientific(double base, double exp) {
+    return base * Math.pow(10.0, exp);
+}

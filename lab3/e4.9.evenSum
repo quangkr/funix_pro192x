@@ -1,0 +1,22 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void evenSum() {
+    Scanner input = new Scanner(System.in);
+    System.out.print("how many integers? ");
+    int iter = input.nextInt();
+    
+    int sum = 0, max = 0;
+    for (int i = 0; i < iter; i++) {
+        System.out.print("next integer? ");
+        int num = input.nextInt();
+        if ( num % 2 == 0 ) {
+            sum += num;
+            if (num > max) {
+                max = num;
+            }
+        }
+    }
+    
+    System.out.println("even sum = " + sum);
+    System.out.println("even max = " + max);
+}

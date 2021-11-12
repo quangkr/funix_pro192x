@@ -1,0 +1,27 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void smallestLargest() {
+    Scanner input = new Scanner(System.in);
+    System.out.print("How many numbers do you want to enter? ");
+    int iter = input.nextInt();
+    
+    int num, smallest = 0, largest = 0;
+    for (int i = 1; i <= iter; i++) {
+        System.out.print("Number " + i + ": ");
+        num = input.nextInt();
+        if (i == 1) {
+            smallest = num;
+            largest = num;
+        } else {
+            if (num < smallest) {
+                smallest = num;
+            }
+            if (num > largest) {
+                largest = num;
+            }
+        }
+    }
+    
+    System.out.println("Smallest = " + smallest);
+    System.out.println("Largest = " + largest);
+}

@@ -1,0 +1,23 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class NumbersOutput {
+    public static final int rep = 6;
+    public static final int range = 10;
+    
+    public static void main(String[] args) {
+        for (int i = 1; i <= rep; i++) {
+            for (int j = 1; j <= range - 1; j++) {
+                System.out.print(" ");
+            }
+            System.out.print("|");
+        }
+        System.out.print("\n");
+
+        for (int i = 1; i <= rep; i++) {
+            for (int j = 1; j <= range - 1; j++) {
+                System.out.print(j);
+            }
+            System.out.print(0);
+        }
+    }
+}

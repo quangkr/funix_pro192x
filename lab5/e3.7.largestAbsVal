@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static int largestAbsVal(int a, int b, int c) {
+    int result = Math.max(Math.abs(a), Math.abs(b));
+    result = Math.max(result, Math.abs(c));
+    return(result);
+}

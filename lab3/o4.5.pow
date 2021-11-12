@@ -1,0 +1,9 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static int pow(int base, int exp) {
+    int result = 1;
+    for (int i = 0; i < exp; i++) {
+        result *= base;
+    }
+    return result;
+}

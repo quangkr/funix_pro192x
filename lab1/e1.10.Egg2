@@ -1,0 +1,31 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class Egg2 {
+    public static void main(String[] args) {
+        upperEgg();
+        lowerEgg();
+        middleEgg();
+        upperEgg();
+        lowerEgg();
+        middleEgg();
+        lowerEgg();
+        upperEgg();
+        middleEgg();
+        lowerEgg();
+    }
+    
+    public static void upperEgg() {
+        System.out.println("  _______");
+        System.out.println(" /       \\");
+        System.out.println("/         \\");
+    }
+    
+    public static void middleEgg() {
+        System.out.println("-\"-'-\"-'-\"-");
+    }
+    
+    public static void lowerEgg() {
+        System.out.println("\\         /");
+        System.out.println(" \\_______/");
+    }
+}

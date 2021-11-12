@@ -1,0 +1,5 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static double sphereVolume(double radius) {
+    return 4*Math.PI/3*radius*radius*radius;
+}

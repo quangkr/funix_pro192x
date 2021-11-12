@@ -1,0 +1,5 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static double area(double radius) {
+    return radius*radius*Math.PI;
+}

@@ -1,0 +1,23 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void longestName(Scanner console, int n) {
+    String longest = "";
+    boolean hasTie = false;
+    for (int i = 1; i <= n; i++) {
+        System.out.print("name #" + i + "? ");
+        String name = console.next();
+        
+        if (name.length() > longest.length()) {
+            longest = name;
+            hasTie = false;
+        } else if (name.length() == longest.length()) {
+            hasTie = true;
+        }
+    }
+    
+    longest = longest.substring(0, 1).toUpperCase() + longest.substring(1).toLowerCase();
+    System.out.println(longest + "'s name is longest");
+    if (hasTie) {
+        System.out.println("(There was a tie!)");
+    }
+}

@@ -1,0 +1,6 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static double triangleArea(double a, double b, double c) {
+    double s = (a + b + c)/2;
+    return Math.sqrt(s*(s-a)*(s-b)*(s-c));
+}

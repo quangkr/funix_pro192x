@@ -1,0 +1,8 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void processName(Scanner input) {
+    System.out.print("Please enter your full name: ");
+    String firstName = input.next();
+    String lastName = input.next();
+    System.out.print("Your name in reverse order is " + lastName + ", " + firstName);
+}

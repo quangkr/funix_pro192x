@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void vertical(String str) {
+    for (int i = 0; i < str.length(); i++) {
+        System.out.println(str.charAt(i));
+    }
+}

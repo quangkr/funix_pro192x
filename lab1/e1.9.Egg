@@ -1,0 +1,12 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public class Egg {
+    public static void main(String[] args) {
+        System.out.println("  _______");
+        System.out.println(" /       \\");
+        System.out.println("/         \\");
+        System.out.println("-\"-'-\"-'-\"-");
+        System.out.println("\\         /");
+        System.out.println(" \\_______/");
+    }
+}
