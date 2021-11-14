@@ -1,21 +1,24 @@
 import java.util.Scanner;
 
+// main class, program logics go here
 public class LuckyNumber {
+  // define a static constant for maximum possible lucky number
+  final static int maximum = 100;
+
+  // initialize a scanner
+  final static Scanner sc = new Scanner(System.in);
+
   public static void main(String[] args) {
     // some data that will be printed out when the game is over
     int totalGames = 0;
     int totalGuesses = 0;
     int bestGame = -1;
 
-    // maximum value of the lucky number
-    int max = 100;
-    boolean willContinue = true;
-    Scanner input = new Scanner(System.in);
-
     // call play() method until user no longer wants to play
+    boolean willContinue = true;
     while (willContinue) {
       totalGames++;
-      int thisGuess = play(input, max);
+      int thisGuess = play(sc);
       totalGuesses += thisGuess;
 
       /* always store the first game's number
@@ -26,7 +29,7 @@ public class LuckyNumber {
 
       // continue playing if only the user type in y or yes, case-insensitively
       System.out.print("Do you want to play again? (y/N) ");
-      String playAgainInput = input.next();
+      String playAgainInput = sc.next();
       if (!(playAgainInput.toLowerCase().equals("y") || playAgainInput.toLowerCase().equals("yes"))) {
         willContinue = false;
       }
@@ -41,13 +44,14 @@ public class LuckyNumber {
     System.out.println("Best game     = " + bestGame);
   }
 
-  public static int play(Scanner input, int max) {
+  // this method do all the work needed for a single round of game
+  public static int play(Scanner input) {
     // generate the lucky number
-    final int luckyNumber = (int) (Math.random() * max);
-    // initialize the number of guesses, we'll need to return it
+    final int luckyNumber = (int) (Math.random() * (maximum + 1));
+    // initialize the number of guesses to be returned later
     int numberOfGuesses = 0;
 
-    System.out.println("I'm thinking of a number between 0 and " + max + "...");
+    System.out.println("I'm thinking of a number between 0 and " + maximum + "...");
 
     // ask for input until it matches the lucky number
     boolean isCorrect = false;
