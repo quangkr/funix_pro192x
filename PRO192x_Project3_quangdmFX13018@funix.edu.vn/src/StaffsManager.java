@@ -23,9 +23,11 @@ public class StaffsManager {
 
   public void addDepartment(Department department) { departments.put(department.getId(), department); }
   public void removeDepartment(Department department) {
-    if (department.getNumberOfStaff() <= 0) {
+    if (department == null) { return; }
+    if (department.getNumberOfStaff() > 0) {
       throw new IllegalArgumentException("Departments have to have no staffs before removal");
     }
+
     departments.remove(department.getId());
   }
 
@@ -39,6 +41,7 @@ public class StaffsManager {
     departments.get(departmentId).incrementNumberOfStaff();
   }
   public void removeStaff(Staff staff) {
+    if (staff == null) { return; }
     if (!staffs.containsKey(staff.getId())) {
       throw new IllegalArgumentException("Invalid Staff instance provided");
     }
