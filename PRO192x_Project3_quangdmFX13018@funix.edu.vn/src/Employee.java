@@ -5,7 +5,7 @@ public class Employee extends Staff {
   /**
    * Ordinary employees may have extra hours
    */
-  int extraHours;
+  double extraHours;
 
   public Employee(
     String name,
@@ -13,14 +13,14 @@ public class Employee extends Staff {
     String joinDate,
     String departmentId,
     double salaryMultiplier,
-    int extraHours
+    double extraHours
   ) {
     super(name, age, joinDate, departmentId, salaryMultiplier);
 
     this.extraHours = extraHours;
   }
 
-  public int getExtraHours() {
+  public double getExtraHours() {
     return extraHours;
   }
 
