@@ -13,45 +13,28 @@ public abstract class Staff implements ICalculator {
    * Basic information of any staff
    */
   private final String id;
-  private String name, joinDate, departId;
+  private String name, joinDate, departmentId;
   private int age;
   private double salaryMultiplier;
 
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getJoinDate() {
-    return joinDate;
-  }
-
-  public String getDepartId() {
-    return departId;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public double getSalaryMultiplier() {
-    return salaryMultiplier;
-  }
+  public String getId() { return id; }
+  public String getName() { return name; }
+  public String getJoinDate() { return joinDate; }
+  public String getDepartmentId() { return departmentId; }
+  public int getAge() { return age; }
+  public double getSalaryMultiplier() { return salaryMultiplier; }
 
   public Staff(
     String name,
     int age,
     String joinDate,
-    String departId,
+    String departmentId,
     double salaryMultiplier
   ) {
     this.name = name;
     this.age = age;
     this.joinDate = joinDate;
-    this.departId = departId;
+    this.departmentId = departmentId;
     this.salaryMultiplier = salaryMultiplier;
 
     // generate an id

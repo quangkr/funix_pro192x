@@ -11,11 +11,11 @@ public class Employee extends Staff {
     String name,
     int age,
     String joinDate,
-    String depart,
+    String departmentId,
     double salaryMultiplier,
     int extraHours
   ) {
-    super(name, age, joinDate, depart, salaryMultiplier);
+    super(name, age, joinDate, departmentId, salaryMultiplier);
 
     this.extraHours = extraHours;
   }
@@ -31,7 +31,7 @@ public class Employee extends Staff {
     System.out.println("Name: " + getName());
     System.out.println("Age: " + getAge());
     System.out.println("Join Date: " + getJoinDate());
-    System.out.println("Department ID: " + getDepartId());
+    System.out.println("Department ID: " + getDepartmentId());
     System.out.println("Salary multiplier: " + getSalaryMultiplier());
   }
 

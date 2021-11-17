@@ -16,17 +16,9 @@ public class Department {
   private String name;
   private int numberOfStaff;
 
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public int getNumberOfStaff() {
-    return numberOfStaff;
-  }
+  public String getId() { return id; }
+  public String getName() { return name; }
+  public int getNumberOfStaff() { return numberOfStaff; }
 
   public void incrementNumberOfStaff() { this.numberOfStaff++; }
   public void decrementNumberOfStaff() { this.numberOfStaff--; }

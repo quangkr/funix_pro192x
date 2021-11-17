@@ -7,35 +7,10 @@ import java.util.Scanner;
  * @author QuangKR
  */
 public class HumanResources {
-  private final static DepartmentList departments = new DepartmentList();
-  private final static StaffList staffs = new StaffList();
+  private final static StaffsManager staffsManager = new StaffsManager();
   private final static Scanner SC = new Scanner(System.in);
 
   public static void main(String[] args) {
-
-    departments.add(new Department("Developers"));
-    departments.add(new Department("Designers"));
-    departments.add(new Department("Marketing team"));
-    departments.add(new Department("Human resources"));
-
-    staffs.add(new Employee("Quang", 26, "2010-01-01", departments.getDepartmentByName("Developers").get(0).getId(), 5, 10));
-    staffs.add(new Employee("Quang", 25, "2016-01-01", departments.getDepartmentByName("Developers").get(0).getId(), 5, 10));
-    staffs.add(new Employee("Nhung", 25, "2012-01-01", departments.getDepartmentByName("Designers").get(0).getId(), 4, 13));
-    staffs.add(new Manager("Tam", 18, "2018-01-01", departments.getDepartmentByName("Designers").get(0).getId(), 4, Manager.ManagerTitles.BUSINESS_LEADER));
-
-    List<Department> deptQuery = departments.getAll();
-    System.out.println(deptQuery);
-    departments.remove(departments.getDepartmentById("D-002").get());
-    System.out.println(deptQuery);
-    System.out.println(departments.getAll());
-
-
-    List<Staff> staffQuery = staffs.getStaffByName("Quang");
-    staffQuery.forEach(s -> System.out.println(s.getId()));
-    staffQuery.forEach(s -> System.out.println(s.getJoinDate()));
-    staffQuery.forEach(s -> System.out.println(s.getDepartId()));
-    staffQuery.forEach(s -> System.out.format("%,.1f\n", s.calculateSalary()));
-
     // intro messages
     System.out.println("Welcome to Human Resources! Your tool to manage staffs and employees");
 
@@ -50,19 +25,13 @@ public class HumanResources {
       });
 
       switch (choice) {
-        case 1:
-          willContinue = false;
-          break;
-        case 2:
-          addDepartment();
-          break;
-        case 3:
-          listDepartment();
-          break;
-        default:
+        case 1 -> willContinue = false;
+        case 2 -> addDepartment();
+        case 3 -> listDepartment();
+        default -> {
           System.out.println("Please choose a valid action");
           System.out.println();
-          break;
+        }
       }
     }
 
@@ -125,7 +94,7 @@ public class HumanResources {
     System.out.print("Please enter department name: ");
     String nameInput = SC.nextLine();
 
-    departments.add(new Department(nameInput));
+    staffsManager.addDepartment(new Department(nameInput));
     System.out.println("Department added successfully!!");
     System.out.println();
   }
@@ -135,7 +104,7 @@ public class HumanResources {
     String contentFormat = "|%1$6s|%2$20s|%3$20d|\n";
     System.out.format(headerFormat, "ID", "Name", "Number of staffs");
     System.out.print(String.format(headerFormat, "", "", "").replace(' ', '-'));
-    departments.getAll().forEach(d -> System.out.format(contentFormat, d.getId(), d.getName(), d.getNumberOfStaff()));
+    staffsManager.getAllDepartments().forEach(d -> System.out.format(contentFormat, d.getId(), d.getName(), d.getNumberOfStaff()));
 
     System.out.println();
   }

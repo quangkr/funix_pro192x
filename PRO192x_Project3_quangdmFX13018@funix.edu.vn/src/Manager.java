@@ -26,11 +26,11 @@ public class Manager extends Staff {
     String name,
     int age,
     String joinDate,
-    String depart,
+    String departmentId,
     double salaryMultiplier,
     ManagerTitles title
   ) {
-    super(name, age, joinDate, depart, salaryMultiplier);
+    super(name, age, joinDate, departmentId, salaryMultiplier);
 
     this.title = title;
   }
@@ -42,7 +42,7 @@ public class Manager extends Staff {
     System.out.println("Name: " + getName());
     System.out.println("Age: " + getAge());
     System.out.println("Join Date: " + getJoinDate());
-    System.out.println("Department ID: " + getDepartId());
+    System.out.println("Department ID: " + getDepartmentId());
     System.out.println("Salary multiplier: " + getSalaryMultiplier());
     System.out.println("Title: " + getTitle());
   }
