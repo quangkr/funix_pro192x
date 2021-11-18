@@ -5,48 +5,53 @@ import java.util.*;
  * and departments, including add, remove, get staff/department
  */
 public class StaffsManager {
-  private final Map<String, Staff> staffs = new HashMap<>();
-  private final Map<String, Department> departments = new HashMap<>();
+  private final List<Staff> staffs = new ArrayList<>();
+  private final List<Department> departments = new ArrayList<>();
 
-  public List<Staff> getAllStaffs() { return new ArrayList<>(staffs.values()); }
-  public List<Department> getAllDepartments() { return new ArrayList<>(departments.values()); }
+  public List<Staff> getAllStaffs() { return Collections.unmodifiableList(staffs); }
+  public List<Department> getAllDepartments() { return Collections.unmodifiableList(departments); }
 
-  public Optional<Staff> getStaffById(String id) { return Optional.ofNullable(staffs.get(id)); }
-  public Optional<Department> getDepartmentById(String id) { return Optional.ofNullable(departments.get(id)); }
+  public Optional<Staff> getStaffById(String id) {
+    return staffs.stream().filter(s -> s.getId().equals(id)).findAny();
+  }
+  public Optional<Department> getDepartmentById(String id) {
+    return departments.stream().filter(d -> d.getId().equals(id)).findAny();
+  }
 
   public List<Staff> getStaffByName(String name) {
-    return staffs.values().stream().filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())).toList();
+    return staffs.stream().filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())).toList();
   }
   public List<Department> getDepartmentByName(String name) {
-    return departments.values().stream().filter(d -> d.getName().toLowerCase().contains(name.toLowerCase())).toList();
+    return departments.stream().filter(d -> d.getName().toLowerCase().contains(name.toLowerCase())).toList();
   }
 
-  public void addDepartment(Department department) { departments.put(department.getId(), department); }
+  public void addDepartment(Department department) { departments.add(department); }
   public void removeDepartment(Department department) {
     if (department == null) { return; }
     if (department.getNumberOfStaff() > 0) {
       throw new IllegalArgumentException("Departments have to have no staffs before removal");
     }
 
-    departments.remove(department.getId());
+    departments.remove(department);
   }
 
   public void addStaff(Staff staff) {
-    String departmentId = staff.getDepartmentId();
-    if (!departments.containsKey(departmentId)) {
+    Optional<Department> department = getDepartmentById(staff.getDepartmentId());
+    if (department.isEmpty()) {
       throw new IllegalArgumentException("Invalid Department ID provided");
     }
 
-    staffs.put(staff.getId(), staff);
-    departments.get(departmentId).incrementNumberOfStaff();
+    staffs.add(staff);
+    department.get().incrementNumberOfStaff();
   }
   public void removeStaff(Staff staff) {
     if (staff == null) { return; }
-    if (!staffs.containsKey(staff.getId())) {
+    Optional<Department> department = getDepartmentById(staff.getDepartmentId());
+    if (!staffs.contains(staff)) {
       throw new IllegalArgumentException("Invalid Staff instance provided");
     }
 
-    staffs.remove(staff.getId());
-    departments.get(staff.getDepartmentId()).decrementNumberOfStaff();
+    staffs.remove(staff);
+    department.ifPresent(d -> d.decrementNumberOfStaff());
   }
 }
