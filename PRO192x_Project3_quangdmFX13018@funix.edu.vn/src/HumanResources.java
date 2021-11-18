@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * This is the class where the main logic of this program is executed
@@ -13,28 +14,54 @@ public class HumanResources {
     // intro messages
     System.out.println("Welcome to Human Resources! Your tool to manage staffs and employees");
 
+    staffsManager.addDepartment(new Department("Developers"));
+    staffsManager.addDepartment(new Department("Designers"));
+    staffsManager.addDepartment(new Department("Human Resources"));
+    staffsManager.addStaff(new Employee("Quang", 26, "2015-01-01", "D-001", 8.7, 2));
+    staffsManager.addStaff(new Employee("Nhung", 25, "2016-01-01", "D-002", 6.5, 6));
+    staffsManager.addStaff(new Employee("Tam", 18, "2020-01-01", "D-003", 9.5, 1));
+    staffsManager.addStaff(new Manager("Dang Quang", 26, "2015-01-01", "D-001", 7, ManagerTitles.BUSINESS_LEADER));
+    staffsManager.addStaff(new Manager("Kieu Nhung", 25, "2016-01-01", "D-002", 9.5, ManagerTitles.PROJECT_LEADER));
+    staffsManager.addStaff(new Manager("Kieu Tam", 18, "2020-01-01", "D-003", 10, ManagerTitles.TECHNICAL_LEADER));
+
     // the main loop
     boolean willContinue = true;
     while (willContinue) {
-      System.out.println("What do you want to do?");
-      int choice = multipleChoice(new String[] {
-        "Exit program",
+      String[] choices = new String[] {
         "Add a department",
         "Remove a department",
         "List departments",
         "Add an employee",
         "Add a manager",
-        "List staffs"
-      });
+        "Remove a staff",
+        "List staffs",
+        "List staffs by department",
+        "Search staff by ID",
+        "Search staff by name",
+        "List staff salary",
+        "Exit program"
+      };
+
+      int choice = getInputLineInt(String.format("What do you want to do? (0-%d, 0 to show help menu) ", choices.length),
+        "Please input a valid integer",
+        i -> i <= choices.length);
+      if (choice == 0) {
+        choice = multipleChoice(choices);
+      }
 
       switch (choice) {
-        case 1 -> willContinue = false;
-        case 2 -> addDepartment();
-        case 3 -> removeDepartment();
-        case 4 -> listDepartment();
-        case 5 -> addEmployee();
-        case 6 -> addManager();
-        case 7 -> listStaffs();
+        case  1 -> addDepartment();
+        case  2 -> removeDepartment();
+        case  3 -> listAllDepartment();
+        case  4 -> addEmployee();
+        case  5 -> addManager();
+        case  6 -> removeStaff();
+        case  7 -> listAllStaffs();
+        case  8 -> listStaffsByDepartment();
+        case  9 -> searchStaffById();
+        case 10 -> searchStaffByName();
+        case 11 -> listStaffSalary();
+        case 12 -> willContinue = false;
         default -> {
           System.out.println("Please choose a valid action");
           System.out.println();
@@ -81,30 +108,32 @@ public class HumanResources {
   }
 
   private static void addDepartment() {
-    System.out.print("Please enter department name: ");
-    String nameInput = SC.nextLine();
+    String nameInput = getInputLine("Please enter department name: ");
 
     staffsManager.addDepartment(new Department(nameInput));
-    System.out.println("Department added successfully!!");
-    System.out.println();
+    System.out.println("Department added successfully!!\n");
   }
   private static void removeDepartment() {
     List<Department> departments = new ArrayList<>(staffsManager.getAllDepartments());
     List<String> departmentNames = new ArrayList<>(departments.stream().map(d -> d.getName()).toList());
 
     // add an option to remove nothing
-    departments.add(null);
-    departmentNames.add("Return");
+    departments.add(0, null);
+    departmentNames.add(0, "Back");
 
+    System.out.println("\nWhich department do you want to remove?");
     Department chosenDepartment = multipleChoice(departmentNames.toArray(new String[0]), departments.toArray(new Department[0]));
+    if (chosenDepartment != null && chosenDepartment.getNumberOfStaff() > 0) {
+      System.out.println("Warning: Department must have no staff before removal. Please try again!\n");
+      return;
+    }
 
     staffsManager.removeDepartment(chosenDepartment);
-    System.out.println("Department removed successfully!!");
-    System.out.println();
+    System.out.println("Department removed successfully!!\n");
   }
-  private static void listDepartment() {
-    String headerFormat = "|%1$6s|%2$20s|%3$20s|\n";
-    String contentFormat = "|%1$6s|%2$20s|%3$20d|\n";
+  private static void listAllDepartment() {
+    String headerFormat  = "|%6s|%20s|%20s|\n";
+    String contentFormat = "|%6s|%20s|%20d|\n";
     System.out.format(headerFormat, "ID", "Name", "Number of staffs");
     System.out.print(String.format(headerFormat, "", "", "").replace(' ', '-'));
     staffsManager.getAllDepartments().forEach(d -> System.out.format(contentFormat, d.getId(), d.getName(), d.getNumberOfStaff()));
@@ -190,17 +219,37 @@ public class HumanResources {
     System.out.println("Manager added successfully!!");
     System.out.println();
   }
-  private static void listStaffs() {
-    String headerFormat = "|%1$11s|%2$22s|%3$4s|%4$11s|%5$17s|%6$18s|%7$12s|\n";
-    String contentFormat = "|%1$11s|%2$22s|%3$4d|%4$11s|%5$17s|%6$18.1f|%7$12.1f|\n";
-    System.out.format(headerFormat, "ID", "Name", "Age", "Join Date", "Title", "Salary multiplier", "Extra hours");
-    System.out.print(String.format(headerFormat, "", "", "", "", "", "", "").replace(' ', '-'));
-    staffsManager.getAllStaffs().forEach(s -> System.out.format(
+  private static void removeStaff() {
+    List<Staff> staffs = new ArrayList<>(staffsManager.getAllStaffs());
+    List<String> messages = new ArrayList<>(staffs.stream()
+      .map(s -> String.format("%s (ID: %s, Department: %s",
+        s.getName(),
+        s.getId(),
+        staffsManager.getDepartmentById(s.getDepartmentId()).get().getName()))
+      .toList());
+
+    // add an option to remove nothing
+    staffs.add(0, null);
+    messages.add(0, "Back");
+
+    System.out.println("\nWhich staff do you want to remove?");
+    Staff chosenStaff = multipleChoice(messages.toArray(new String[0]), staffs.toArray(new Staff[0]));
+
+    staffsManager.removeStaff(chosenStaff);
+    System.out.println("Staff removed successfully!!\n");
+  }
+  private static void listStaffs(Collection<Staff> staffsToPrint) {
+    String headerFormat  = "|%11s|%22s|%4s|%11s|%20s|%17s|%18s|%12s|\n";
+    String contentFormat = "|%11s|%22s|%4d|%11s|%20s|%17s|%18.1f|%12.1f|\n";
+    System.out.format(headerFormat, "ID", "Name", "Age", "Join Date", "Department", "Title", "Salary multiplier", "Extra hours");
+    System.out.print(String.format(headerFormat, "", "", "", "", "", "", "", "").replace(' ', '-'));
+    staffsToPrint.forEach(s -> System.out.format(
       contentFormat,
       s.getId(),
       s.getName(),
       s.getAge(),
       s.getJoinDate(),
+      staffsManager.getDepartmentById(s.getDepartmentId()).get().getName(),
       (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
       s.getSalaryMultiplier(),
       (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0
@@ -208,7 +257,80 @@ public class HumanResources {
 
     System.out.println();
   }
+  private static void listAllStaffs() {
+    listStaffs(staffsManager.getAllStaffs());
+  }
+  private static void listStaffsByDepartment() {
+    System.out.println("Please choose department: ");
+    List<Department> departments = staffsManager.getAllDepartments();
+    String[] departmentNames = departments.stream().map(d -> d.getName()).toArray(String[]::new);
+    String[] departmentIds = departments.stream().map(d -> d.getId()).toArray(String[]::new);
+    String departmentId = multipleChoice(departmentNames, departmentIds);
 
+    List<Staff> staffsToPrint = staffsManager.getAllStaffs().stream() // turn to a stream
+      .collect(Collectors.groupingBy(Staff::getDepartmentId))               // use groupingBy collector to group staffs by department
+      .get(departmentId);                                                   // only get desired department
+
+    listStaffs(staffsToPrint);
+  }
+  private static void searchStaffById() {
+    String inputId = getInputLine("\nStaffID to search? ");
+    Optional<Staff> searchResult = staffsManager.getStaffById(inputId.toUpperCase());
+
+    if (searchResult.isPresent()) {
+      System.out.println("Found 1 staff:");
+      searchResult.get().displayInformation();
+    } else {
+      System.out.println("There is no staff with specified ID!");
+    }
+    System.out.println();
+  }
+  private static void searchStaffByName() {
+    String inputName = getInputLine("\nStaff name to search? ");
+    List<Staff> searchResult = staffsManager.getStaffByName(inputName);
+
+    int size = searchResult.size();
+    if (size >= 1) {
+      System.out.println("Found " + size + " staff:");
+      searchResult.forEach(s -> s.displayInformation());
+    } else {
+      System.out.println("There is no staff with specified name!");
+    }
+    System.out.println();
+  }
+  private static void listStaffSalary() {
+    System.out.println("\nHow do you want to sort staffs' salary? ");
+    int sortPreference = multipleChoice(new String[] {"Ascending", "Descending"});
+    List<Staff> staffs = staffsManager.getAllStaffs();
+    if (sortPreference == 2) {
+      staffs.sort((x, y) -> Double.compare(y.calculateSalary(), x.calculateSalary()));
+    } else {
+      staffs.sort((x, y) -> Double.compare(x.calculateSalary(), y.calculateSalary()));
+    }
+
+    System.out.println();
+    String headerFormat  = "|%11s|%22s|%11s|%20s|%17s|%18s|%12s|%13s|\n";
+    String contentFormat = "|%11s|%22s|%11s|%20s|%17s|%18.1f|%12.1f|%,13.1f|\n";
+    System.out.format(headerFormat, "ID", "Name", "Join Date", "Department", "Title", "Salary multiplier", "Extra hours", "Salary");
+    System.out.print(String.format(headerFormat, "", "", "", "", "", "", "", "").replace(' ', '-'));
+    staffs.forEach(s -> System.out.format(
+      contentFormat,
+      s.getId(),
+      s.getName(),
+      s.getJoinDate(),
+      staffsManager.getDepartmentById(s.getDepartmentId()).get().getName(),
+      (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
+      s.getSalaryMultiplier(),
+      (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0,
+      s.calculateSalary()
+    ));
+    System.out.println();
+  }
+
+  private static String getInputLine(String message) {
+    System.out.print(message);
+    return SC.nextLine();
+  }
   private static int getInputLineInt(String message, String retryMessage, Function<Integer, Boolean> additionalConstraint) {
     int input = 0;
     boolean willContinue = true;
@@ -232,9 +354,6 @@ public class HumanResources {
     }
 
     return input;
-  }
-  private static int getInputLineInt(String message, String retryMessage) {
-    return getInputLineInt(message, retryMessage, n -> true);
   }
   private static double getInputLineDouble(String message, String retryMessage, Function<Double, Boolean> additionalConstraint) {
     // wait for user next line of input
@@ -260,8 +379,5 @@ public class HumanResources {
     }
 
     return input;
-  }
-  private static double getInputLineDouble(String message, String retryMessage) {
-    return getInputLineDouble(message, retryMessage, n -> true);
   }
 }

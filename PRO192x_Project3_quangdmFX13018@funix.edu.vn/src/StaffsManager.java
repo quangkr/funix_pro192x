@@ -15,10 +15,10 @@ public class StaffsManager {
   public Optional<Department> getDepartmentById(String id) { return Optional.ofNullable(departments.get(id)); }
 
   public List<Staff> getStaffByName(String name) {
-    return staffs.values().stream().filter(s -> s.getName().equals(name)).toList();
+    return staffs.values().stream().filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())).toList();
   }
   public List<Department> getDepartmentByName(String name) {
-    return departments.values().stream().filter(s -> s.getName().equals(name)).toList();
+    return departments.values().stream().filter(d -> d.getName().toLowerCase().contains(name.toLowerCase())).toList();
   }
 
   public void addDepartment(Department department) { departments.put(department.getId(), department); }

@@ -33,6 +33,7 @@ public class Employee extends Staff {
     System.out.println("Join Date: " + getJoinDate());
     System.out.println("Department ID: " + getDepartmentId());
     System.out.println("Salary multiplier: " + getSalaryMultiplier());
+    System.out.println("Extra hours: " + getExtraHours());
   }
 
   @Override
