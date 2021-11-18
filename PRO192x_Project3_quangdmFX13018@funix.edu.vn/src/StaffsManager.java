@@ -52,6 +52,6 @@ public class StaffsManager {
     }
 
     staffs.remove(staff);
-    department.ifPresent(d -> d.decrementNumberOfStaff());
+    department.ifPresent(Department::decrementNumberOfStaff);
   }
 }

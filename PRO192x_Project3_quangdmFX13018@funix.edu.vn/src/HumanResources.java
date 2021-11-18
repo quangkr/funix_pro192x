@@ -115,7 +115,7 @@ public class HumanResources {
   }
   private static void removeDepartment() {
     List<Department> departments = new ArrayList<>(staffsManager.getAllDepartments());
-    List<String> departmentNames = new ArrayList<>(departments.stream().map(d -> d.getName()).toList());
+    List<String> departmentNames = new ArrayList<>(departments.stream().map(Department::getName).toList());
 
     // add an option to remove nothing
     departments.add(0, null);
@@ -149,8 +149,8 @@ public class HumanResources {
 
     System.out.println("Please choose staff department: ");
     List<Department> departments = staffsManager.getAllDepartments();
-    String[] departmentNames = departments.stream().map(d -> d.getName()).toArray(String[]::new);
-    String[] departmentIds = departments.stream().map(d -> d.getId()).toArray(String[]::new);
+    String[] departmentNames = departments.stream().map(Department::getName).toArray(String[]::new);
+    String[] departmentIds = departments.stream().map(Department::getId).toArray(String[]::new);
     String departmentId = multipleChoice(departmentNames, departmentIds);
 
     int age = getInputLineInt(
@@ -189,8 +189,8 @@ public class HumanResources {
 
     System.out.println("Please choose staff department: ");
     List<Department> departments = staffsManager.getAllDepartments();
-    String[] departmentNames = departments.stream().map(d -> d.getName()).toArray(String[]::new);
-    String[] departmentIds = departments.stream().map(d -> d.getId()).toArray(String[]::new);
+    String[] departmentNames = departments.stream().map(Department::getName).toArray(String[]::new);
+    String[] departmentIds = departments.stream().map(Department::getId).toArray(String[]::new);
     String departmentId = multipleChoice(departmentNames, departmentIds);
 
     int age = getInputLineInt(
@@ -205,7 +205,7 @@ public class HumanResources {
     );
 
     ManagerTitles[] titles = ManagerTitles.values();
-    String[] titlesName = Arrays.stream(titles).map(t -> t.value()).toArray(String[]::new);
+    String[] titlesName = Arrays.stream(titles).map(ManagerTitles::value).toArray(String[]::new);
     ManagerTitles title = multipleChoice(titlesName, titles);
 
     staffsManager.addStaff(new Manager(
@@ -225,7 +225,7 @@ public class HumanResources {
       .map(s -> String.format("%s (ID: %s, Department: %s)",
         s.getName(),
         s.getId(),
-        staffsManager.getDepartmentById(s.getDepartmentId()).get().getName()))
+        staffsManager.getDepartmentById(s.getDepartmentId()).map(Department::getName).orElse("")))
       .toList());
 
     // add an option to remove nothing
@@ -249,7 +249,7 @@ public class HumanResources {
       s.getName(),
       s.getAge(),
       s.getJoinDate(),
-      staffsManager.getDepartmentById(s.getDepartmentId()).get().getName(),
+      staffsManager.getDepartmentById(s.getDepartmentId()).map(Department::getName).orElse(""),
       (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
       s.getSalaryMultiplier(),
       (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0
@@ -263,8 +263,8 @@ public class HumanResources {
   private static void listStaffsByDepartment() {
     System.out.println("Please choose department: ");
     List<Department> departments = staffsManager.getAllDepartments();
-    String[] departmentNames = departments.stream().map(d -> d.getName()).toArray(String[]::new);
-    String[] departmentIds = departments.stream().map(d -> d.getId()).toArray(String[]::new);
+    String[] departmentNames = departments.stream().map(Department::getName).toArray(String[]::new);
+    String[] departmentIds = departments.stream().map(Department::getId).toArray(String[]::new);
     String departmentId = multipleChoice(departmentNames, departmentIds);
 
     List<Staff> staffsToPrint = staffsManager.getAllStaffs().stream() // turn to a stream
@@ -292,7 +292,7 @@ public class HumanResources {
     int size = searchResult.size();
     if (size >= 1) {
       System.out.println("Found " + size + " staff:");
-      searchResult.forEach(s -> s.displayInformation());
+      searchResult.forEach(Staff::displayInformation);
     } else {
       System.out.println("There is no staff with specified name!");
     }
@@ -318,7 +318,7 @@ public class HumanResources {
       s.getId(),
       s.getName(),
       s.getJoinDate(),
-      staffsManager.getDepartmentById(s.getDepartmentId()).get().getName(),
+      staffsManager.getDepartmentById(s.getDepartmentId()).map(Department::getName).orElse(""),
       (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
       s.getSalaryMultiplier(),
       (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0,
