@@ -222,7 +222,7 @@ public class HumanResources {
   private static void removeStaff() {
     List<Staff> staffs = new ArrayList<>(staffsManager.getAllStaffs());
     List<String> messages = new ArrayList<>(staffs.stream()
-      .map(s -> String.format("%s (ID: %s, Department: %s",
+      .map(s -> String.format("%s (ID: %s, Department: %s)",
         s.getName(),
         s.getId(),
         staffsManager.getDepartmentById(s.getDepartmentId()).get().getName()))
@@ -301,7 +301,7 @@ public class HumanResources {
   private static void listStaffSalary() {
     System.out.println("\nHow do you want to sort staffs' salary? ");
     int sortPreference = multipleChoice(new String[] {"Ascending", "Descending"});
-    List<Staff> staffs = staffsManager.getAllStaffs();
+    List<Staff> staffs = new ArrayList<>(staffsManager.getAllStaffs());
     if (sortPreference == 2) {
       staffs.sort((x, y) -> Double.compare(y.calculateSalary(), x.calculateSalary()));
     } else {
