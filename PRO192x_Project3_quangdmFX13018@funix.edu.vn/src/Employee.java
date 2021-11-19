@@ -7,6 +7,9 @@ public class Employee extends Staff {
    */
   double extraHours;
 
+  /**
+   * Constructor
+   */
   public Employee(
     String name,
     int age,
@@ -20,10 +23,16 @@ public class Employee extends Staff {
     this.extraHours = extraHours;
   }
 
+  /**
+   * getter
+   */
   public double getExtraHours() {
     return extraHours;
   }
 
+  /**
+   * Implement super's abstract method
+   */
   @Override
   public void displayInformation() {
     System.out.println();
@@ -36,6 +45,9 @@ public class Employee extends Staff {
     System.out.println("Extra hours: " + getExtraHours());
   }
 
+  /**
+   * Implement ICalculator interface
+   */
   @Override
   public double calculateSalary() {
     return (getSalaryMultiplier() * 3000000.0) + (getExtraHours() * 200000.0);

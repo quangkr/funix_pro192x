@@ -7,13 +7,16 @@ import java.util.stream.Collectors;
  * @author QuangKR
  */
 public class HumanResources {
+  // instantiate a StaffManager to store departments and staffs
   private final static StaffsManager staffsManager = new StaffsManager();
+  // instantiate a Scanner to get user input
   private final static Scanner SC = new Scanner(System.in);
 
   public static void main(String[] args) {
     // intro messages
-    System.out.println("Welcome to Human Resources! Your tool to manage staffs and employees");
+    System.out.println("Welcome to Human Resources! Your tool to manage staffs and employees\n");
 
+    // add a bunch of pre-made data for quick prototyping
     staffsManager.addDepartment(new Department("Developers"));
     staffsManager.addDepartment(new Department("Designers"));
     staffsManager.addDepartment(new Department("Human Resources"));
@@ -42,13 +45,19 @@ public class HumanResources {
         "Exit program"
       };
 
+      // prompt for user input
       int choice = getInputLineInt(String.format("What do you want to do? (0-%d, 0 to show help menu) ", choices.length),
         "Please input a valid integer",
         i -> i <= choices.length);
+      /*
+       * if user want to see help text (choice == 0), show them,
+       * then immediately prompt for input again
+       */
       if (choice == 0) {
         choice = multipleChoice(choices);
       }
 
+      // perform actions based on user's choice
       switch (choice) {
         case  1 -> addDepartment();
         case  2 -> removeDepartment();
@@ -62,10 +71,11 @@ public class HumanResources {
         case 10 -> searchStaffByName();
         case 11 -> listStaffSalary();
         case 12 -> willContinue = false;
-        default -> {
-          System.out.println("Please choose a valid action");
-          System.out.println();
-        }
+
+        /*
+         * because of how multipleChoice() works, choice will never have an
+         * "out of bound" value
+         */
       }
     }
 
@@ -76,6 +86,7 @@ public class HumanResources {
   /**
    * Print out a list of actions and let user choose one
    * @param messages the array of messages to be shown
+   * @return an integer indicating the user's choice
    */
   private static int multipleChoice(String[] messages) {
     // print the messages
@@ -96,6 +107,7 @@ public class HumanResources {
    * Print out a list of values and let user choose one
    * @param messages the array of messages to be shown
    * @param list the array of values from which would be returned
+   * @return the value corresponding to user's choice
    */
   private static <T> T multipleChoice(String[] messages, T[] list) {
     if (messages.length != list.length) {
@@ -107,12 +119,20 @@ public class HumanResources {
     return list[input - 1];
   }
 
+  /**
+   * Ask user for a department name, instantiate a Department
+   * then add it to the list
+   */
   private static void addDepartment() {
     String nameInput = getInputLine("Please enter department name: ");
 
     staffsManager.addDepartment(new Department(nameInput));
     System.out.println("Department added successfully!!\n");
   }
+  /**
+   * Let user choose one of the existing departments
+   * then remove it if it has no staffs
+   */
   private static void removeDepartment() {
     List<Department> departments = new ArrayList<>(staffsManager.getAllDepartments());
     List<String> departmentNames = new ArrayList<>(departments.stream().map(Department::getName).toList());
@@ -131,6 +151,9 @@ public class HumanResources {
     staffsManager.removeDepartment(chosenDepartment);
     System.out.println("Department removed successfully!!\n");
   }
+  /**
+   * Print all existing departments in a tabular format
+   */
   private static void listAllDepartment() {
     String headerFormat  = "|%6s|%20s|%20s|\n";
     String contentFormat = "|%6s|%20s|%20d|\n";
@@ -141,6 +164,10 @@ public class HumanResources {
     System.out.println();
   }
 
+  /**
+   * Ask user for information of an Employee, instantiate it
+   * then add it to the list
+   */
   private static void addEmployee() {
     System.out.print("Please enter staff name: ");
     String name = SC.nextLine();
@@ -181,6 +208,10 @@ public class HumanResources {
     System.out.println("Employee added successfully!!");
     System.out.println();
   }
+  /**
+   * Ask user for information of an Manager, instantiate it
+   * then add it to the list
+   */
   private static void addManager() {
     System.out.print("Please enter staff name: ");
     String name = SC.nextLine();
@@ -219,6 +250,9 @@ public class HumanResources {
     System.out.println("Manager added successfully!!");
     System.out.println();
   }
+  /**
+   * Let user choose one of the existing staffs, then remove it
+   */
   private static void removeStaff() {
     List<Staff> staffs = new ArrayList<>(staffsManager.getAllStaffs());
     List<String> messages = new ArrayList<>(staffs.stream()
@@ -238,6 +272,10 @@ public class HumanResources {
     staffsManager.removeStaff(chosenStaff);
     System.out.println("Staff removed successfully!!\n");
   }
+  /**
+   * Print a list of staffs in a tabular format
+   * @param staffsToPrint a list of staffs to be printed
+   */
   private static void listStaffs(Collection<Staff> staffsToPrint) {
     String headerFormat  = "|%11s|%22s|%4s|%11s|%20s|%17s|%18s|%12s|\n";
     String contentFormat = "|%11s|%22s|%4d|%11s|%20s|%17s|%18.1f|%12.1f|\n";
@@ -257,9 +295,16 @@ public class HumanResources {
 
     System.out.println();
   }
+  /**
+   * Print all existing staffs in a tabular format
+   */
   private static void listAllStaffs() {
     listStaffs(staffsManager.getAllStaffs());
   }
+  /**
+   * Let user choose a department, then print all the staffs
+   * in the chosen department in a tabular format
+   */
   private static void listStaffsByDepartment() {
     System.out.println("Please choose department: ");
     List<Department> departments = staffsManager.getAllDepartments();
@@ -273,6 +318,9 @@ public class HumanResources {
 
     listStaffs(staffsToPrint);
   }
+  /**
+   * Prompt user for a staff ID, then print the found staff's information
+   */
   private static void searchStaffById() {
     String inputId = getInputLine("\nStaffID to search? ");
     Optional<Staff> searchResult = staffsManager.getStaffById(inputId.toUpperCase());
@@ -285,6 +333,10 @@ public class HumanResources {
     }
     System.out.println();
   }
+  /**
+   * Prompt user for a staff name, then print the information
+   * of all the staff that matches
+   */
   private static void searchStaffByName() {
     String inputName = getInputLine("\nStaff name to search? ");
     List<Staff> searchResult = staffsManager.getStaffByName(inputName);
@@ -298,6 +350,10 @@ public class HumanResources {
     }
     System.out.println();
   }
+  /**
+   * Let user choose to sort staff salaries ascending or descending
+   * then print staff salaries in a tabular format
+   */
   private static void listStaffSalary() {
     System.out.println("\nHow do you want to sort staffs' salary? ");
     int sortPreference = multipleChoice(new String[] {"Ascending", "Descending"});
@@ -327,10 +383,23 @@ public class HumanResources {
     System.out.println();
   }
 
+  /**
+   * Helper method to get user input
+   * @param message print out this message before prompting user for input
+   * @return whatever user typed in
+   */
   private static String getInputLine(String message) {
     System.out.print(message);
     return SC.nextLine();
   }
+  /**
+   * Helper method to get user input
+   * @param message print out this message before prompting user for input
+   * @param retryMessage print out this message if user input is invalid
+   * @param additionalConstraint additional constraint for the input
+   *                             (for example: must be positive)
+   * @return a number of type integer that user typed in
+   */
   private static int getInputLineInt(String message, String retryMessage, Function<Integer, Boolean> additionalConstraint) {
     int input = 0;
     boolean willContinue = true;
@@ -355,6 +424,14 @@ public class HumanResources {
 
     return input;
   }
+  /**
+   * Helper method to get user input
+   * @param message print out this message before prompting user for input
+   * @param retryMessage print out this message if user input is invalid
+   * @param additionalConstraint additional constraint for the input
+   *                             (for example: must be positive)
+   * @return a number of type double that user typed in
+   */
   private static double getInputLineDouble(String message, String retryMessage, Function<Double, Boolean> additionalConstraint) {
     // wait for user next line of input
     double input = 0;

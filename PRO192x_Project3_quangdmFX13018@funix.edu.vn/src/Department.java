@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * This represents a department
+ * This represents a single department
  */
 public class Department {
   /**
@@ -16,10 +16,16 @@ public class Department {
   private String name;
   private int numberOfStaff;
 
+  /**
+   * Basic getters
+   */
   public String getId() { return id; }
   public String getName() { return name; }
   public int getNumberOfStaff() { return numberOfStaff; }
 
+  /**
+   * Simple methods for increment/decrement number of staff
+   */
   public void incrementNumberOfStaff() { this.numberOfStaff++; }
   public void decrementNumberOfStaff() { this.numberOfStaff--; }
 

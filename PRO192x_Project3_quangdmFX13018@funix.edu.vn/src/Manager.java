@@ -2,8 +2,14 @@
  * Manager, as the name suggests, is a manager-type staff
  */
 public class Manager extends Staff {
+  /**
+   * Manager must have a title
+   */
   private final ManagerTitles title;
 
+  /**
+   * Constructor
+   */
   public Manager(
     String name,
     int age,
@@ -17,6 +23,16 @@ public class Manager extends Staff {
     this.title = title;
   }
 
+  /**
+   * getter
+   */
+  public ManagerTitles getTitle() {
+    return title;
+  }
+
+  /**
+   * Implement super's abstract method
+   */
   @Override
   public void displayInformation() {
     System.out.println();
@@ -29,10 +45,10 @@ public class Manager extends Staff {
     System.out.println("Title: " + getTitle());
   }
 
-  public ManagerTitles getTitle() {
-    return title;
-  }
 
+  /**
+   * Implement ICalculator interface
+   */
   @Override
   public double calculateSalary() {
     int extraSalary = switch (this.title) {

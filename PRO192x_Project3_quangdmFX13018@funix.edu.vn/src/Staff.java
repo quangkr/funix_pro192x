@@ -10,13 +10,16 @@ public abstract class Staff implements ICalculator {
   private final static AtomicLong sequenceNumber = new AtomicLong();
 
   /**
-   * Basic information of any staff
+   * Basic information of a staff
    */
   private final String id;
   private String name, joinDate, departmentId;
   private int age;
   private double salaryMultiplier;
 
+  /**
+   * Basic getters
+   */
   public String getId() { return id; }
   public String getName() { return name; }
   public String getJoinDate() { return joinDate; }
@@ -24,6 +27,9 @@ public abstract class Staff implements ICalculator {
   public int getAge() { return age; }
   public double getSalaryMultiplier() { return salaryMultiplier; }
 
+ /**
+  * Constructor
+  */
   public Staff(
     String name,
     int age,
@@ -41,5 +47,8 @@ public abstract class Staff implements ICalculator {
     this.id = String.format("S-%08d", sequenceNumber.incrementAndGet());
   }
 
+  /**
+   * Print staff information to the output
+   */
   public abstract void displayInformation();
 }

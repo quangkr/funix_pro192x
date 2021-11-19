@@ -1,6 +1,5 @@
 /**
- * ManagerTitles is an enum represents different titles that
- * a manager can have
+ * An enum represents different titles that a manager can have
  */
 public enum ManagerTitles {
   BUSINESS_LEADER("Business Leader"),
