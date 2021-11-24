@@ -3,4 +3,5 @@
  */
 public interface ICalculator {
   double calculateSalary();
+  void displaySalary();
 }

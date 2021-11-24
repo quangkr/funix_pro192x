@@ -13,8 +13,11 @@ public abstract class Staff implements ICalculator {
    * Basic information of a staff
    */
   private final String id;
-  private String name, joinDate, departmentId;
+  private String name;
+  private String joinDate;
+  private String departmentId;
   private int age;
+  private int daysOff;
   private double salaryMultiplier;
 
   /**
@@ -25,6 +28,7 @@ public abstract class Staff implements ICalculator {
   public String getJoinDate() { return joinDate; }
   public String getDepartmentId() { return departmentId; }
   public int getAge() { return age; }
+  public int getDaysOff() { return daysOff; }
   public double getSalaryMultiplier() { return salaryMultiplier; }
 
  /**
@@ -35,12 +39,14 @@ public abstract class Staff implements ICalculator {
     int age,
     String joinDate,
     String departmentId,
+    int daysOff,
     double salaryMultiplier
   ) {
     this.name = name;
     this.age = age;
     this.joinDate = joinDate;
     this.departmentId = departmentId;
+    this.daysOff = daysOff;
     this.salaryMultiplier = salaryMultiplier;
 
     // generate an id

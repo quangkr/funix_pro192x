@@ -20,12 +20,12 @@ public class HumanResources {
     staffsManager.addDepartment(new Department("Developers"));
     staffsManager.addDepartment(new Department("Designers"));
     staffsManager.addDepartment(new Department("Human Resources"));
-    staffsManager.addStaff(new Employee("Quang", 26, "2015-01-01", "D-001", 8.7, 2));
-    staffsManager.addStaff(new Employee("Nhung", 25, "2016-01-01", "D-002", 6.5, 6));
-    staffsManager.addStaff(new Employee("Tam", 18, "2020-01-01", "D-003", 9.5, 1));
-    staffsManager.addStaff(new Manager("Dang Quang", 26, "2015-01-01", "D-001", 7, ManagerTitles.BUSINESS_LEADER));
-    staffsManager.addStaff(new Manager("Kieu Nhung", 25, "2016-01-01", "D-002", 9.5, ManagerTitles.PROJECT_LEADER));
-    staffsManager.addStaff(new Manager("Kieu Tam", 18, "2020-01-01", "D-003", 10, ManagerTitles.TECHNICAL_LEADER));
+    staffsManager.addStaff(new Employee("Quang", 26, "2015-01-01", "D-001", 0, 8.7, 2));
+    staffsManager.addStaff(new Employee("Nhung", 25, "2016-01-01", "D-002", 0, 6.5, 6));
+    staffsManager.addStaff(new Employee("Tam", 18, "2020-01-01", "D-003", 0, 9.5, 1));
+    staffsManager.addStaff(new Manager("Dang Quang", 26, "2015-01-01", "D-001", 0, 7, ManagerTitles.BUSINESS_LEADER));
+    staffsManager.addStaff(new Manager("Kieu Nhung", 25, "2016-01-01", "D-002", 0, 9.5, ManagerTitles.PROJECT_LEADER));
+    staffsManager.addStaff(new Manager("Kieu Tam", 18, "2020-01-01", "D-003", 0, 10, ManagerTitles.TECHNICAL_LEADER));
 
     // the main loop
     boolean willContinue = true;
@@ -185,6 +185,11 @@ public class HumanResources {
       "Staff age should be a positive integer. Please try again",
       n -> n > 0
     );
+    int daysOff = getInputLineInt(
+      "Please enter staff number of days off: ",
+      "Staff number of days off should be a positive integer. Please try again",
+      n -> n > 0
+    );
     double salaryMultiplier = getInputLineDouble(
       "Please enter staff salary multiplier: ",
       "Staff salary multiplier should be a positive number. Please try again",
@@ -202,6 +207,7 @@ public class HumanResources {
       age,
       joinDate,
       departmentId,
+      daysOff,
       salaryMultiplier,
       extraHours
     ));
@@ -209,7 +215,7 @@ public class HumanResources {
     System.out.println();
   }
   /**
-   * Ask user for information of an Manager, instantiate it
+   * Ask user for information of a Manager, instantiate it
    * then add it to the list
    */
   private static void addManager() {
@@ -229,6 +235,11 @@ public class HumanResources {
       "Staff age should be a positive integer. Please try again",
       n -> n > 0
     );
+    int daysOff = getInputLineInt(
+      "Please enter staff number of days off: ",
+      "Staff number of days off should be a positive integer. Please try again",
+      n -> n > 0
+    );
     double salaryMultiplier = getInputLineDouble(
       "Please enter staff salary multiplier: ",
       "Staff salary multiplier should be a positive number. Please try again",
@@ -244,6 +255,7 @@ public class HumanResources {
       age,
       joinDate,
       departmentId,
+      daysOff,
       salaryMultiplier,
       title
     ));
@@ -277,21 +289,10 @@ public class HumanResources {
    * @param staffsToPrint a list of staffs to be printed
    */
   private static void listStaffs(Collection<Staff> staffsToPrint) {
-    String headerFormat  = "|%11s|%22s|%4s|%11s|%20s|%17s|%18s|%12s|\n";
-    String contentFormat = "|%11s|%22s|%4d|%11s|%20s|%17s|%18.1f|%12.1f|\n";
-    System.out.format(headerFormat, "ID", "Name", "Age", "Join Date", "Department", "Title", "Salary multiplier", "Extra hours");
+    String headerFormat = "|%11s|%22s|%4s|%11s|%20s|%9s|%18s|%25s|\n";
+    System.out.format(headerFormat, "ID", "Name", "Age", "Join Date", "Department ID", "Days off", "Salary multiplier", "Extra hours / Title");
     System.out.print(String.format(headerFormat, "", "", "", "", "", "", "", "").replace(' ', '-'));
-    staffsToPrint.forEach(s -> System.out.format(
-      contentFormat,
-      s.getId(),
-      s.getName(),
-      s.getAge(),
-      s.getJoinDate(),
-      staffsManager.getDepartmentById(s.getDepartmentId()).map(Department::getName).orElse(""),
-      (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
-      s.getSalaryMultiplier(),
-      (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0
-    ));
+    staffsToPrint.forEach(Staff::displayInformation);
 
     System.out.println();
   }
@@ -312,7 +313,7 @@ public class HumanResources {
     String[] departmentIds = departments.stream().map(Department::getId).toArray(String[]::new);
     String departmentId = multipleChoice(departmentNames, departmentIds);
 
-    List<Staff> staffsToPrint = staffsManager.getAllStaffs().stream() // turn to a stream
+    List<Staff> staffsToPrint = staffsManager.getAllStaffs().stream()       // turn to a stream
       .collect(Collectors.groupingBy(Staff::getDepartmentId))               // use groupingBy collector to group staffs by department
       .get(departmentId);                                                   // only get desired department
 
@@ -344,7 +345,7 @@ public class HumanResources {
     int size = searchResult.size();
     if (size >= 1) {
       System.out.println("Found " + size + " staff:");
-      searchResult.forEach(Staff::displayInformation);
+      listStaffs(searchResult);
     } else {
       System.out.println("There is no staff with specified name!");
     }
@@ -364,22 +365,11 @@ public class HumanResources {
       staffs.sort((x, y) -> Double.compare(x.calculateSalary(), y.calculateSalary()));
     }
 
-    System.out.println();
-    String headerFormat  = "|%11s|%22s|%11s|%20s|%17s|%18s|%12s|%13s|\n";
-    String contentFormat = "|%11s|%22s|%11s|%20s|%17s|%18.1f|%12.1f|%,13.1f|\n";
-    System.out.format(headerFormat, "ID", "Name", "Join Date", "Department", "Title", "Salary multiplier", "Extra hours", "Salary");
-    System.out.print(String.format(headerFormat, "", "", "", "", "", "", "", "").replace(' ', '-'));
-    staffs.forEach(s -> System.out.format(
-      contentFormat,
-      s.getId(),
-      s.getName(),
-      s.getJoinDate(),
-      staffsManager.getDepartmentById(s.getDepartmentId()).map(Department::getName).orElse(""),
-      (s instanceof Manager) ? ((Manager) s).getTitle().value() : "",
-      s.getSalaryMultiplier(),
-      (s instanceof Employee) ? ((Employee) s).getExtraHours() : 0.0,
-      s.calculateSalary()
-    ));
+    String headerFormat = "|%11s|%22s|%4s|%11s|%20s|%9s|%18s|%25s|%25s|\n";
+    System.out.format(headerFormat, "ID", "Name", "Age", "Join Date", "Department ID", "Days off", "Salary multiplier", "Extra hours / Title", "Salary");
+    System.out.print(String.format(headerFormat, "", "", "", "", "", "", "", "", "").replace(' ', '-'));
+    staffs.forEach(ICalculator::displaySalary);
+
     System.out.println();
   }
 

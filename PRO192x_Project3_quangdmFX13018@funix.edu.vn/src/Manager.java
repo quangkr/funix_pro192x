@@ -5,7 +5,7 @@ public class Manager extends Staff {
   /**
    * Manager must have a title
    */
-  private final ManagerTitles title;
+  private ManagerTitles title;
 
   /**
    * Constructor
@@ -15,10 +15,11 @@ public class Manager extends Staff {
     int age,
     String joinDate,
     String departmentId,
+    int daysOff,
     double salaryMultiplier,
     ManagerTitles title
   ) {
-    super(name, age, joinDate, departmentId, salaryMultiplier);
+    super(name, age, joinDate, departmentId, daysOff, salaryMultiplier);
 
     this.title = title;
   }
@@ -35,16 +36,19 @@ public class Manager extends Staff {
    */
   @Override
   public void displayInformation() {
-    System.out.println();
-    System.out.println("ID: " + getId());
-    System.out.println("Name: " + getName());
-    System.out.println("Age: " + getAge());
-    System.out.println("Join Date: " + getJoinDate());
-    System.out.println("Department ID: " + getDepartmentId());
-    System.out.println("Salary multiplier: " + getSalaryMultiplier());
-    System.out.println("Title: " + getTitle());
+    String fmtStr = "|%11s|%22s|%4d|%11s|%20s|%9s|%18.1f|%25s|\n";
+    System.out.format(
+      fmtStr,
+      getId(),
+      getName(),
+      getAge(),
+      getJoinDate(),
+      getDepartmentId(),
+      getDaysOff(),
+      getSalaryMultiplier(),
+      getTitle().value()
+    );
   }
-
 
   /**
    * Implement ICalculator interface
@@ -58,5 +62,21 @@ public class Manager extends Staff {
     };
 
     return (getSalaryMultiplier() * 5000000.0) + extraSalary;
+  }
+
+  public void displaySalary() {
+    String fmtStr = "|%11s|%22s|%4d|%11s|%20s|%9s|%18.1f|%25s|%,25.1f|\n";
+    System.out.format(
+      fmtStr,
+      getId(),
+      getName(),
+      getAge(),
+      getJoinDate(),
+      getDepartmentId(),
+      getDaysOff(),
+      getSalaryMultiplier(),
+      getTitle().value(),
+      calculateSalary()
+    );
   }
 }
