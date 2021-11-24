@@ -1,0 +1,19 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public double slope(Point other) {
+    if ((this.x - other.x) == 0) {
+        throw new IllegalArgumentException();
+    } else {
+        return ((double) (other.y - this.y)) / (other.x - this.x);
+    }
+}
+
+public boolean isCollinear(Point p1, Point p2) {
+    try {
+        double slope1 = Math.round(slope(p1) * 10000) / 10000.0;
+        double slope2 = Math.round(slope(p2) * 10000) / 10000.0;
+        return slope1 == slope2;
+    } catch (IllegalArgumentException e) {
+        return (this.x == p1.x) && (this.x == p2.x);
+    }
+}

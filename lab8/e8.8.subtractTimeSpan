@@ -1,0 +1,13 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public void subtract(TimeSpan span) {
+    int hDiff = this.hours - span.getHours();
+    int mDiff = this.minutes - span.getMinutes();
+    if (mDiff >= 0) {
+        this.minutes = mDiff;
+        this.hours = hDiff;
+    } else {
+        this.hours = hDiff - 1;
+        this.minutes = 60 + mDiff;
+    }
+}

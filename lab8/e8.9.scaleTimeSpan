@@ -1,0 +1,9 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public void scale(int factor) {
+    int newH = this.hours * factor;
+    int newM = this.minutes * factor;
+    
+    this.hours = newH + (newM / 60);
+    this.minutes = newM % 60;
+}

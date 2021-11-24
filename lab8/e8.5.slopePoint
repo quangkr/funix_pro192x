@@ -1,0 +1,9 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public double slope(Point other) {
+    if ((this.x - other.x) == 0) {
+        throw new IllegalArgumentException();
+    } else {
+        return ((double) (other.y - this.y)) / (other.x - this.x);
+    }
+}

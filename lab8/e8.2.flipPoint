@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public void flip() {
+    int tmpX = this.x;
+    this.x = -this.y;
+    this.y = -tmpX;
+}

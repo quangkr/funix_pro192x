@@ -1,0 +1,17 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void removeDuplicates(ArrayList<String> list) {
+    int length = list.size();
+    if (length == 0) {
+        return;
+    }
+    
+    String tmp = list.get(length - 1);
+    for (int i = length - 2; i >= 0; i--) {
+        if (list.get(i).equals(tmp)) {
+            list.remove(i);
+        } else {
+            tmp = list.get(i);
+        }
+    }
+}

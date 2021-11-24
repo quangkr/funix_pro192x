@@ -1,0 +1,16 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static void minToFront(ArrayList<Integer> list) {
+    int minIndex = 0;
+    int min = list.get(0);
+    
+    for (int i = 1; i < list.size(); i++) {
+        if (list.get(i) < min) {
+            minIndex = i;
+            min = list.get(i);
+        }
+    }
+    
+    list.remove(minIndex);
+    list.add(0, min);
+}

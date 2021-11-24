@@ -1,0 +1,17 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public int quadrant() {
+    if (x*y > 0) {
+        if (x > 0) {
+            return 1;
+        } else {
+            return 3;
+        }
+    } else if (x*y < 0) {
+        if (x > 0) {
+            return 4;
+        } else {
+            return 2;
+        }
+    } else { return 0; }
+}

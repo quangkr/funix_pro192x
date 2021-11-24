@@ -1,0 +1,6 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public Point(int initialX, int initialY) {
+    x = initialX;
+    y = initialY;
+}

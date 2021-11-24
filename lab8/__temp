@@ -1,0 +1,37 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public static String season(int month, int day) {
+    if (month == 12 && day >= 16) {
+        if (day < 16) {
+            return "Fall";
+        } else {
+            return "Winter";
+        }
+    } else if (month < 3) {
+        return "Winter";
+    } else if (month == 3) {
+        if (day < 16) {
+            return "Winter";
+        } else {
+            return "Spring";
+        }
+    } else if (month < 6) {
+        return "Spring";
+    } else if (month == 6) {
+        if (day < 16) {
+            return "Spring";
+        } else {
+            return "Summer";
+        }
+    } else if (month < 9) {
+        return "Summer";
+    } else if (month == 9) {
+        if (day < 16) {
+            return "Summer";
+        } else {
+            return "Fall";
+        }
+    } else {
+        return "Fall";
+    }
+}

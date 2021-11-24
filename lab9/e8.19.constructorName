@@ -1,0 +1,7 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public Name(String first, char middle, String last) {
+    firstName = first;
+    middleInitial = middle;
+    lastName = last;
+}

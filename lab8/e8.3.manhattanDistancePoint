@@ -1,0 +1,5 @@
+// vim: set ft=java sw=4 ts=4 :
+
+public int manhattanDistance(Point other) {
+    return Math.abs(this.x - other.x) + Math.abs(this.y - other.y);
+}
